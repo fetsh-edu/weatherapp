@@ -35,13 +35,6 @@ class MainViewModel(
                     }
                 )
             )
-//            liveDataToObserve.postValue(
-//                if (Random.nextBoolean()) {
-//                    RemoteData.Success(repositoryImpl.getWeatherFromLocalStorage())
-//                } else {
-//                    RemoteData.Failure(NetworkErrorException("Network error"))
-//                }
-//            )
         }.start()
     }
 }

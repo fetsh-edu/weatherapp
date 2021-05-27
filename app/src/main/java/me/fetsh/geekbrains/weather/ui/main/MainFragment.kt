@@ -12,6 +12,7 @@ import me.fetsh.geekbrains.weather.RemoteData
 import me.fetsh.geekbrains.weather.databinding.MainFragmentBinding
 import me.fetsh.geekbrains.weather.model.Weather
 import me.fetsh.geekbrains.weather.ui.details.DetailsFragment
+import me.fetsh.geekbrains.weather.ui.utils.showSnackBar
 
 class MainFragment : Fragment() {
 
@@ -22,15 +23,16 @@ class MainFragment : Fragment() {
     private var _binding: MainFragmentBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var viewModel: MainViewModel
+    private val viewModel: MainViewModel by lazy {
+        ViewModelProvider(this).get(MainViewModel::class.java)
+    }
     private val adapter = MainFragmentAdapter(object : OnItemViewClickListener {
         override fun onItemViewClick(weather: Weather) {
-            val manager = activity?.supportFragmentManager
-            if (manager != null) {
-                val bundle = Bundle()
-                bundle.putParcelable(DetailsFragment.BUNDLE_EXTRA, weather)
+            activity?.supportFragmentManager?.also { manager ->
                 manager.beginTransaction()
-                    .add(R.id.container, DetailsFragment.newInstance(bundle))
+                    .add(R.id.container, DetailsFragment.newInstance(Bundle().also { bundle ->
+                        bundle.putParcelable(DetailsFragment.BUNDLE_EXTRA, weather)
+                    }))
                     .addToBackStack("")
                     .commitAllowingStateLoss()
             }
@@ -50,7 +52,6 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.mainFragmentRecyclerView.adapter = adapter
         binding.mainFragmentFAB.setOnClickListener { changeWeatherDataSet() }
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         viewModel.getLiveData().observe(viewLifecycleOwner, this::renderData)
         viewModel.getWeatherFromLocalSourceRus()
     }
@@ -70,10 +71,12 @@ class MainFragment : Fragment() {
         when (data) {
             is RemoteData.Failure -> {
                 binding.mainFragmentLoadingLayout.visibility = View.GONE
-                Snackbar
-                    .make(binding.mainFragmentFAB, getString(R.string.error), Snackbar.LENGTH_INDEFINITE)
-                    .setAction(getString(R.string.reload)) { viewModel.getWeatherFromLocalSourceRus() }
-                    .show()
+                binding.mainFragmentRootView.showSnackBar(
+                    context = context!!,
+                    text = R.string.error,
+                    actionText = R.string.reload) {
+                    viewModel.getWeatherFromLocalSourceRus()
+                }
             }
             RemoteData.Loading -> {
                 binding.mainFragmentLoadingLayout.visibility = View.VISIBLE
