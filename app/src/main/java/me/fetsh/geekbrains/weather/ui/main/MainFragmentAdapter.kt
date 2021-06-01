@@ -6,14 +6,15 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import me.fetsh.geekbrains.weather.R
+import me.fetsh.geekbrains.weather.model.City
 import me.fetsh.geekbrains.weather.model.Weather
 
 class MainFragmentAdapter(private var onItemViewClickListener: MainFragment.OnItemViewClickListener?) :
     RecyclerView.Adapter<MainFragmentAdapter.MainViewHolder>() {
 
-    private var weatherData: List<Weather> = listOf()
+    private var weatherData: List<City> = listOf()
 
-    fun setWeather(data: List<Weather>) {
+    fun setWeather(data: List<City>) {
         weatherData = data
         notifyDataSetChanged()
     }
@@ -42,10 +43,10 @@ class MainFragmentAdapter(private var onItemViewClickListener: MainFragment.OnIt
 
     inner class MainViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        fun bind(weather: Weather) {
-            itemView.findViewById<TextView>(R.id.mainFragmentRecyclerItemTextView).text = weather.city.city
+        fun bind(city: City) {
+            itemView.findViewById<TextView>(R.id.mainFragmentRecyclerItemTextView).text = city.city
             itemView.setOnClickListener {
-                onItemViewClickListener?.onItemViewClick(weather)
+                onItemViewClickListener?.onItemViewClick(city)
             }
 
         }

@@ -5,4 +5,5 @@
     <string name="city_coordinates">lt/ln: %s, %s"</string>
     <string name="error">Error</string>
     <string name="reload">Reload</string>
+    <string name="not_asked">Not Asked</string>
 </resources>

@@ -3,13 +3,14 @@ package me.fetsh.geekbrains.weather.ui.main
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import me.fetsh.geekbrains.weather.RemoteData
+import me.fetsh.geekbrains.weather.model.City
 import me.fetsh.geekbrains.weather.model.Repository
 import me.fetsh.geekbrains.weather.model.RepositoryImpl
 import me.fetsh.geekbrains.weather.model.Weather
 import java.lang.Thread.sleep
 
 class MainViewModel(
-    private val liveDataToObserve: MutableLiveData<RemoteData<List<Weather>, Throwable>> = MutableLiveData(RemoteData.NotAsked),
+    private val liveDataToObserve: MutableLiveData<RemoteData<List<City>, Throwable>> = MutableLiveData(RemoteData.NotAsked),
     private val repositoryImpl: Repository = RepositoryImpl()
 ) :
     ViewModel() {
@@ -29,9 +30,9 @@ class MainViewModel(
             liveDataToObserve.postValue(
                 RemoteData.Success(
                     if (isRussian) {
-                        repositoryImpl.getWeatherFromLocalStorageRus()
+                        repositoryImpl.getCitiesFromLocalStorageRus()
                     } else {
-                        repositoryImpl.getWeatherFromLocalStorageWorld()
+                        repositoryImpl.getCitiesFromLocalStorageWorld()
                     }
                 )
             )

@@ -10,6 +10,7 @@ import com.google.android.material.snackbar.Snackbar
 import me.fetsh.geekbrains.weather.R
 import me.fetsh.geekbrains.weather.RemoteData
 import me.fetsh.geekbrains.weather.databinding.MainFragmentBinding
+import me.fetsh.geekbrains.weather.model.City
 import me.fetsh.geekbrains.weather.model.Weather
 import me.fetsh.geekbrains.weather.ui.details.DetailsFragment
 import me.fetsh.geekbrains.weather.ui.utils.showSnackBar
@@ -17,7 +18,7 @@ import me.fetsh.geekbrains.weather.ui.utils.showSnackBar
 class MainFragment : Fragment() {
 
     interface OnItemViewClickListener {
-        fun onItemViewClick(weather: Weather)
+        fun onItemViewClick(city: City)
     }
 
     private var _binding: MainFragmentBinding? = null
@@ -27,14 +28,14 @@ class MainFragment : Fragment() {
         ViewModelProvider(this).get(MainViewModel::class.java)
     }
     private val adapter = MainFragmentAdapter(object : OnItemViewClickListener {
-        override fun onItemViewClick(weather: Weather) {
+        override fun onItemViewClick(city: City) {
             activity?.supportFragmentManager?.also { manager ->
                 manager.beginTransaction()
-                    .add(R.id.container, DetailsFragment.newInstance(Bundle().also { bundle ->
-                        bundle.putParcelable(DetailsFragment.BUNDLE_EXTRA, weather)
+                    .replace(R.id.container, DetailsFragment.newInstance(Bundle().also { bundle ->
+                        bundle.putParcelable(DetailsFragment.BUNDLE_EXTRA, city)
                     }))
                     .addToBackStack("")
-                    .commitAllowingStateLoss()
+                    .commit()
             }
         }
     })
@@ -67,12 +68,12 @@ class MainFragment : Fragment() {
         isDataSetRus = !isDataSetRus
     }
 
-    private fun renderData(data: RemoteData<List<Weather>, Throwable>) {
+    private fun renderData(data: RemoteData<List<City>, Throwable>) {
         when (data) {
             is RemoteData.Failure -> {
                 binding.mainFragmentLoadingLayout.visibility = View.GONE
                 binding.mainFragmentRootView.showSnackBar(
-                    context = context!!,
+                    context = requireContext(),
                     text = R.string.error,
                     actionText = R.string.reload) {
                     viewModel.getWeatherFromLocalSourceRus()
