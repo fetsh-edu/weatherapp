@@ -42,8 +42,7 @@ class DetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         cityBundle = arguments?.getParcelable(BUNDLE_EXTRA) ?: City()
-        binding.mainView.visibility = View.GONE
-        binding.loadingLayout.visibility = View.VISIBLE
+        displayWeather(RemoteData.Loading)
         repositoryImpl.loadWeather(cityBundle.lat, cityBundle.lon, this::displayWeather)
     }
 
