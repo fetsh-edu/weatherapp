@@ -9,7 +9,6 @@ import com.google.gson.Gson
 import me.fetsh.geekbrains.weather.RemoteData
 import java.io.BufferedReader
 import java.io.InputStreamReader
-import java.lang.IllegalArgumentException
 import java.lang.IllegalStateException
 import java.net.MalformedURLException
 import java.net.URL
