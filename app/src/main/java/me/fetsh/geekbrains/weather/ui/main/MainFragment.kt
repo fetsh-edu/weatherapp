@@ -6,12 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.snackbar.Snackbar
 import me.fetsh.geekbrains.weather.R
 import me.fetsh.geekbrains.weather.RemoteData
 import me.fetsh.geekbrains.weather.databinding.MainFragmentBinding
 import me.fetsh.geekbrains.weather.model.City
-import me.fetsh.geekbrains.weather.model.Weather
+import me.fetsh.geekbrains.weather.model.WeatherViewModel
 import me.fetsh.geekbrains.weather.ui.details.DetailsFragment
 import me.fetsh.geekbrains.weather.ui.utils.showSnackBar
 
@@ -24,8 +23,8 @@ class MainFragment : Fragment() {
     private var _binding: MainFragmentBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: MainViewModel by lazy {
-        ViewModelProvider(this).get(MainViewModel::class.java)
+    private val viewModel: WeatherViewModel by lazy {
+        ViewModelProvider(this).get(WeatherViewModel::class.java)
     }
     private val adapter = MainFragmentAdapter(object : OnItemViewClickListener {
         override fun onItemViewClick(city: City) {
@@ -53,16 +52,16 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.mainFragmentRecyclerView.adapter = adapter
         binding.mainFragmentFAB.setOnClickListener { changeWeatherDataSet() }
-        viewModel.getLiveData().observe(viewLifecycleOwner, this::renderData)
-        viewModel.getWeatherFromLocalSourceRus()
+        viewModel.remoteCities.observe(viewLifecycleOwner, this::renderData)
+        viewModel.getCitiesFromLocalSourceRus()
     }
 
     private fun changeWeatherDataSet() {
         if (isDataSetRus) {
-            viewModel.getWeatherFromLocalSourceWorld()
+            viewModel.getCitiesFromLocalSourceWorld()
             binding.mainFragmentFAB.setImageResource(R.drawable.ic_russia)
         } else {
-            viewModel.getWeatherFromLocalSourceRus()
+            viewModel.getCitiesFromLocalSourceRus()
             binding.mainFragmentFAB.setImageResource(R.drawable.ic_earth)
         }
         isDataSetRus = !isDataSetRus
@@ -76,7 +75,7 @@ class MainFragment : Fragment() {
                     context = requireContext(),
                     text = R.string.error,
                     actionText = R.string.reload) {
-                    viewModel.getWeatherFromLocalSourceRus()
+                    viewModel.getCitiesFromLocalSourceRus()
                 }
             }
             RemoteData.Loading -> {

@@ -6,5 +6,6 @@ data class Weather(
 data class Fact(
     val temp: Int?,
     val feels_like: Int?,
-    val condition: String?
+    val condition: String?,
+    val icon: String?
 )
