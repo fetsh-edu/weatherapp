@@ -1,5 +1,6 @@
 package me.fetsh.geekbrains.weather.ui.main
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,10 +10,13 @@ import androidx.lifecycle.ViewModelProvider
 import me.fetsh.geekbrains.weather.R
 import me.fetsh.geekbrains.weather.RemoteData
 import me.fetsh.geekbrains.weather.databinding.MainFragmentBinding
+import me.fetsh.geekbrains.weather.model.CitiesSet
 import me.fetsh.geekbrains.weather.model.City
 import me.fetsh.geekbrains.weather.model.WeatherViewModel
 import me.fetsh.geekbrains.weather.ui.details.DetailsFragment
 import me.fetsh.geekbrains.weather.ui.utils.showSnackBar
+
+private const val CITIES_SET = "LIST_OF_TOWNS_KEY"
 
 class MainFragment : Fragment() {
 
@@ -38,7 +42,8 @@ class MainFragment : Fragment() {
             }
         }
     })
-    private var isDataSetRus: Boolean = true
+    private val defaultCitiesSet : CitiesSet = CitiesSet.RUS
+    private var citiesSet: CitiesSet = defaultCitiesSet
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,20 +56,40 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.mainFragmentRecyclerView.adapter = adapter
-        binding.mainFragmentFAB.setOnClickListener { changeWeatherDataSet() }
+        binding.mainFragmentFAB.setOnClickListener { changeCitiesDataSet() }
         viewModel.remoteCities.observe(viewLifecycleOwner, this::renderData)
-        viewModel.getCitiesFromLocalSourceRus()
+        activity?.let { activity ->
+            val savedCitiesSet = CitiesSet.fromString(
+                activity
+                    .getPreferences(Context.MODE_PRIVATE)
+                    .getString(CITIES_SET, defaultCitiesSet.toString())!!
+            )
+            if (defaultCitiesSet != savedCitiesSet) {
+                changeCitiesDataSet()
+            } else {
+                viewModel.getCitiesFromLocalSourceRus()
+            }
+        }
     }
 
-    private fun changeWeatherDataSet() {
-        if (isDataSetRus) {
-            viewModel.getCitiesFromLocalSourceWorld()
-            binding.mainFragmentFAB.setImageResource(R.drawable.ic_russia)
-        } else {
-            viewModel.getCitiesFromLocalSourceRus()
-            binding.mainFragmentFAB.setImageResource(R.drawable.ic_earth)
+    private fun changeCitiesDataSet() {
+        citiesSet = when(citiesSet) {
+            CitiesSet.RUS -> {
+                viewModel.getCitiesFromLocalSourceWorld()
+                binding.mainFragmentFAB.setImageResource(R.drawable.ic_russia)
+                CitiesSet.WORLD
+            }
+            CitiesSet.WORLD -> {
+                viewModel.getCitiesFromLocalSourceRus()
+                binding.mainFragmentFAB.setImageResource(R.drawable.ic_earth)
+                CitiesSet.RUS
+            }
         }
-        isDataSetRus = !isDataSetRus
+        activity
+            ?.getPreferences(Context.MODE_PRIVATE)
+            ?.edit()
+            ?.putString(CITIES_SET, citiesSet.toString())
+            ?.apply()
     }
 
     private fun renderData(data: RemoteData<List<City>, Throwable>) {
