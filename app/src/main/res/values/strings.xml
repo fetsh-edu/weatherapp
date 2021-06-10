@@ -7,4 +7,5 @@
     <string name="reload">Reload</string>
     <string name="not_asked">Not Asked</string>
     <string name="no_connection">No internet connecction</string>
+    <string name="menu_title_history">History</string>
 </resources>

@@ -70,6 +70,13 @@ class DetailsFragment : Fragment() {
                 binding.mainView.visibility = View.VISIBLE
                 binding.loadingLayout.visibility = View.GONE
                 weather.value.fact?.let { fact ->
+                    fact.temp?.let { temperature ->
+                        viewModel.saveCityToDB(
+                            city_name = cityBundle.city,
+                            temperature = temperature,
+                            condition = fact.condition ?: ""
+                        )
+                    }
                     binding.weatherCondition.text = fact.condition
                     binding.temperatureValue.text = fact.temp.toString()
                     binding.feelsLikeValue.text = fact.feels_like.toString()

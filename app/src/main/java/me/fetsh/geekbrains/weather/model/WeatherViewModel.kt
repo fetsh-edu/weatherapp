@@ -3,10 +3,9 @@ package me.fetsh.geekbrains.weather.model
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import me.fetsh.geekbrains.weather.App.Companion.getHistoryDao
 import me.fetsh.geekbrains.weather.RemoteData
-import me.fetsh.geekbrains.weather.repository.RemoteDataSource
-import me.fetsh.geekbrains.weather.repository.Repository
-import me.fetsh.geekbrains.weather.repository.RepositoryImpl
+import me.fetsh.geekbrains.weather.repository.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -15,7 +14,8 @@ import java.lang.Thread.sleep
 class WeatherViewModel(
     private val _remoteCities: MutableLiveData<RemoteData<List<City>, Throwable>> = MutableLiveData(RemoteData.NotAsked),
     private val _remoteWeather: MutableLiveData<RemoteData<Weather, Throwable>> = MutableLiveData(RemoteData.NotAsked),
-    private val repositoryImpl: Repository = RepositoryImpl(RemoteDataSource())
+    private val repositoryImpl: Repository = RepositoryImpl(RemoteDataSource()),
+    private val historyRepository: LocalRepository = LocalRepositoryImpl(getHistoryDao())
 ) :
     ViewModel() {
 
@@ -28,6 +28,14 @@ class WeatherViewModel(
     fun getWeatherFromRemoteSource(lat: Double, lon: Double) {
         _remoteWeather.value = RemoteData.Loading
         repositoryImpl.getWeatherFromServer(lat, lon, callBack)
+    }
+
+    fun saveCityToDB(
+        city_name: String,
+        temperature: Int,
+        condition: String
+    ) {
+        historyRepository.saveEntity(city_name, temperature, condition)
     }
 
     private val callBack = object :
