@@ -35,7 +35,9 @@ class WeatherViewModel(
         temperature: Int,
         condition: String
     ) {
-        historyRepository.saveEntity(city_name, temperature, condition)
+        Thread {
+            historyRepository.saveEntity(city_name, temperature, condition)
+        }.start()
     }
 
     private val callBack = object :

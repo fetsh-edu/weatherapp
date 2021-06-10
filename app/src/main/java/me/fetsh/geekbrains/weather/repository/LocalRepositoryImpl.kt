@@ -1,7 +1,5 @@
 package me.fetsh.geekbrains.weather.repository
 
-import me.fetsh.geekbrains.weather.model.City
-import me.fetsh.geekbrains.weather.model.Weather
 import me.fetsh.geekbrains.weather.room.HistoryDao
 import me.fetsh.geekbrains.weather.room.HistoryEntity
 

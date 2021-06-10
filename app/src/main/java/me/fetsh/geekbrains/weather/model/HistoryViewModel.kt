@@ -19,6 +19,8 @@ class HistoryViewModel(
 
     fun getAllHistory() {
         _historyLiveData.value = RemoteData.Loading
-        _historyLiveData.value = RemoteData.Success(historyRepository.getAllHistory())
+        Thread {
+            _historyLiveData.postValue(RemoteData.Success(historyRepository.getAllHistory()))
+        }.start()
     }
 }
