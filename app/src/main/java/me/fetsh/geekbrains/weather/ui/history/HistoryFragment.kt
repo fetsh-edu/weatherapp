@@ -24,7 +24,7 @@ class HistoryFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = HistoryFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -36,8 +36,8 @@ class HistoryFragment : Fragment() {
         viewModel.getAllHistory()
     }
 
-    private fun renderData(appState: RemoteData<List<HistoryEntity>, Throwable>) {
-        when (appState) {
+    private fun renderData(historyList: RemoteData<List<HistoryEntity>, Throwable>) {
+        when (historyList) {
             is RemoteData.Failure -> {
                 binding.historyFragmentRecyclerview.visibility = View.VISIBLE
                 binding.includedLoadingLayout.loadingLayout.visibility = View.GONE
@@ -56,7 +56,7 @@ class HistoryFragment : Fragment() {
             is RemoteData.Success -> {
                 binding.historyFragmentRecyclerview.visibility = View.VISIBLE
                 binding.includedLoadingLayout.loadingLayout.visibility = View.GONE
-                adapter.setData(appState.value)
+                adapter.setData(historyList.value)
             }
         }
     }

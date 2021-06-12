@@ -20,7 +20,11 @@ class HistoryViewModel(
     fun getAllHistory() {
         _historyLiveData.value = RemoteData.Loading
         Thread {
-            _historyLiveData.postValue(RemoteData.Success(historyRepository.getAllHistory()))
+            try {
+                _historyLiveData.postValue(RemoteData.Success(historyRepository.getAllHistory()))
+            } catch (e: Exception) {
+                _historyLiveData.postValue(RemoteData.Failure(e))
+            }
         }.start()
     }
 }
