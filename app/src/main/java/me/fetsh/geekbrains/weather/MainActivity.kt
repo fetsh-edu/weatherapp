@@ -12,6 +12,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import com.google.android.material.snackbar.Snackbar
+import me.fetsh.geekbrains.weather.ui.contacts.ContactsFragment
 import me.fetsh.geekbrains.weather.ui.history.HistoryFragment
 import me.fetsh.geekbrains.weather.ui.main.MainFragment
 
@@ -56,6 +57,15 @@ class MainActivity : AppCompatActivity() {
                 supportFragmentManager.apply {
                     beginTransaction()
                         .add(R.id.container, HistoryFragment.newInstance())
+                        .addToBackStack("")
+                        .commitAllowingStateLoss()
+                }
+                true
+            }
+            R.id.menu_content_provider -> {
+                supportFragmentManager.apply {
+                    beginTransaction()
+                        .add(R.id.container, ContactsFragment.newInstance())
                         .addToBackStack("")
                         .commitAllowingStateLoss()
                 }

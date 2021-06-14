@@ -8,4 +8,10 @@
     <string name="not_asked">Not Asked</string>
     <string name="no_connection">No internet connecction</string>
     <string name="menu_title_history">History</string>
+    <string name="content_provider">Contacts</string>
+    <string name="contacts_permission_title">Contacts permission</string>
+    <string name="contacts_permission_message">Grant contacts access</string>
+    <string name="contacts_permission_request_button">Request</string>
+    <string name="cancel">Cancel</string>
+    <string name="contacts_permission_denied_message">We are unable to show your contacts</string>
 </resources>
