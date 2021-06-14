@@ -26,4 +26,8 @@
     <string name="dialog_rationale_decline">Cancel</string>
     <string name="dialog_address_title">Your address</string>
     <string name="dialog_address_get_weather">Get weather</string>
+    <string name="google_maps">Maps</string>
+    <string name="default_address">Red Square, 1, Moscow</string>
+    <string name="button_search_map">Search</string>
+    <string name="marker_start">Start</string>
 </resources>

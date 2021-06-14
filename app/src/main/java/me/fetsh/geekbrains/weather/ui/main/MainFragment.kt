@@ -142,19 +142,15 @@ class MainFragment : Fragment() {
     private val onLocationListener = object : LocationListener {
         override fun onLocationChanged(location: Location) {
             locationManager?.removeUpdates(this)
-            android.util.Log.d("AA", "Location changed")
             context?.let {
                 getAddressAsync(it, location)
             }
         }
         override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {
-            android.util.Log.d("AA", "onStatusChanged")
         }
         override fun onProviderEnabled(provider: String) {
-            android.util.Log.d("AA", "onProviderEnabled")
         }
         override fun onProviderDisabled(provider: String) {
-            android.util.Log.d("AA", "onProviderDisabled")
         }
     }
 
@@ -167,7 +163,6 @@ class MainFragment : Fragment() {
                 locationManager?.let { locationManager ->
                     if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                         locationManager.getProvider(LocationManager.GPS_PROVIDER)?.let { provider ->
-                            android.util.Log.d("AA", "LocationManager.GPS_PROVIDER is enabled")
                             locationManager.requestLocationUpdates(
                                 LocationManager.GPS_PROVIDER,
                                 REFRESH_PERIOD,
