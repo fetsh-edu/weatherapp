@@ -14,4 +14,16 @@
     <string name="contacts_permission_request_button">Request</string>
     <string name="cancel">Cancel</string>
     <string name="contacts_permission_denied_message">We are unable to show your contacts</string>
+    <string name="dialog_button_close">Close</string>
+    <string name="dialog_title_no_gps">Location access</string>
+    <string name="dialog_message_no_gps">Permit location access to get current weather at your location</string>
+    <string name="dialog_title_gps_turned_off">GPS turned off</string>
+    <string name="dialog_message_last_location_unknown">Turn GPS on to get current weather at your location</string>
+    <string name="dialog_message_last_known_location">Latest known location is used. Turn GPS on to get current weather at your location</string>
+    <string name="dialog_rationale_title">Permit location access</string>
+    <string name="dialog_rationale_meaasge">Rationale</string>
+    <string name="dialog_rationale_give_access">Grant</string>
+    <string name="dialog_rationale_decline">Cancel</string>
+    <string name="dialog_address_title">Your address</string>
+    <string name="dialog_address_get_weather">Get weather</string>
 </resources>
