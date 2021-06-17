@@ -10,4 +10,5 @@
     <color name="loadingBackground">#F44336</color>
     <color name="fragmentBackground">#FFFFFF</color>
     <color name="colorAccent">#858585</color>
+    <color name="colorPrimaryDark">#F4C536</color>
 </resources>
