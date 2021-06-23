@@ -1,17 +1,15 @@
-package me.fetsh.geekbrains.weather.ui.history
+package me.fetsh.geekbrains.weather.ui.contacts
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import me.fetsh.geekbrains.weather.databinding.HistoryFragmentRecyclerItemBinding
-import me.fetsh.geekbrains.weather.room.HistoryEntity
 
-class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.RecyclerItemViewHolder>() {
+class ContactsAdapter : RecyclerView.Adapter<ContactsAdapter.RecyclerItemViewHolder>() {
 
-    private var data: List<HistoryEntity> = arrayListOf()
+    private var data: List<String> = arrayListOf()
 
-    fun setData(data: List<HistoryEntity>) {
+    fun setData(data: List<String>) {
         this.data = data
         notifyDataSetChanged()
     }
@@ -30,18 +28,9 @@ class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.RecyclerItemViewHolde
     }
 
     inner class RecyclerItemViewHolder(private val itemBinding: HistoryFragmentRecyclerItemBinding) : RecyclerView.ViewHolder(itemBinding.root) {
-
-        fun bind(data: HistoryEntity) {
+        fun bind(data: String) {
             if (layoutPosition != RecyclerView.NO_POSITION) {
-                itemBinding.recyclerViewItem.text =
-                    String.format("%s %d %s", data.city, data.temperature, data.condition)
-                itemView.setOnClickListener {
-                    Toast.makeText(
-                        itemView.context,
-                        "on click: ${data.city}",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+                itemBinding.recyclerViewItem.text = data
             }
         }
     }
