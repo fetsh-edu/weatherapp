@@ -1,12 +1,10 @@
 package me.fetsh.geekbrains.weather.ui.history
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.history_fragment_recycler_item.view.*
-import me.fetsh.geekbrains.weather.R
+import me.fetsh.geekbrains.weather.databinding.HistoryFragmentRecyclerItemBinding
 import me.fetsh.geekbrains.weather.room.HistoryEntity
 
 class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.RecyclerItemViewHolder>() {
@@ -19,10 +17,8 @@ class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.RecyclerItemViewHolde
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerItemViewHolder {
-        return RecyclerItemViewHolder(
-            LayoutInflater.from(parent.context)
-                .inflate(R.layout.history_fragment_recycler_item, parent, false) as View
-        )
+        val itemBinding = HistoryFragmentRecyclerItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return RecyclerItemViewHolder(itemBinding)
     }
 
     override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
@@ -33,11 +29,11 @@ class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.RecyclerItemViewHolde
         return data.size
     }
 
-    inner class RecyclerItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class RecyclerItemViewHolder(private val itemBinding: HistoryFragmentRecyclerItemBinding) : RecyclerView.ViewHolder(itemBinding.root) {
 
         fun bind(data: HistoryEntity) {
             if (layoutPosition != RecyclerView.NO_POSITION) {
-                itemView.recyclerViewItem.text =
+                itemBinding.recyclerViewItem.text =
                     String.format("%s %d %s", data.city, data.temperature, data.condition)
                 itemView.setOnClickListener {
                     Toast.makeText(

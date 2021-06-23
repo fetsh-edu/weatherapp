@@ -1,7 +1,7 @@
 package me.fetsh.geekbrains.weather.model
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class City(
