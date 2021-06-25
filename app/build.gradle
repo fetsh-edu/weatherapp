@@ -36,6 +36,17 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
+    flavorDimensions 'source'
+    productFlavors {
+        yandex {
+            dimension 'source'
+            versionNameSuffix 'yandexapi'
+        }
+        openweather {
+            dimension 'source'
+            versionNameSuffix 'open'
+        }
+    }
 }
 
 dependencies {
